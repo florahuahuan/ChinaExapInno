@@ -1,15 +1,9 @@
 [README.md](https://github.com/user-attachments/files/34232640/README.md)
 # LLM-assisted qualitative corroboration of potential exaptation in Chinese listed companies
 
-**Companion materials for:** *A hybrid human-machine approach to identifying and classifying exaptation in China*
-
 ## Scope and interpretation
 
-This repository documents the **available** implementation of annual-report collection, preparation, DeepSeek-R1 structured extraction, and manual qualitative interpretation. It supports a **qualitative textual-corroboration** component. It **does not** constitute a validated patent-pair classifier, a firm-year quantitative corroboration study, or a statistical audit of LLM accuracy. Three purposively chosen firms illustrate evidence strengths and limitations; they are not a representative random validation sample.
-
-The focal-patent **application-year** window in the patent study is **2000–2023**. Corporate disclosures or news published in 2025 are *post-sample contextual illustrations*, not observations in the 2000–2023 patent analysis.
-
-**Evidence status:** This repository package was prepared from Python and prompt files supplied by the authors. No original run logs, complete JSONL results, manual-screening ledger, or historic model-access date were supplied. It documents actual code settings, not reconstructed or invented experimental totals. Public upload and final claims require author verification of filenames, original run provenance, rights, and data availability.
+This repository documents the **available** implementation of annual-report collection, preparation, DeepSeek-R1 structured extraction, and manual qualitative interpretation. It supports a **qualitative textual-corroboration** component. 
 
 ## Repository contents
 
