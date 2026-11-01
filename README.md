@@ -1,5 +1,5 @@
 [README.md](https://github.com/user-attachments/files/34232640/README.md)
-# LLM-assisted qualitative corroboration of potential exaptation in Chinese listed companies
+# AI-assisted textual screening for potential exaptive technological redeployment in Chinese listed firms
 
 ## Scope and interpretation
 
