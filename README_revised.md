@@ -26,6 +26,7 @@ scripts/
   summarize_jsonl.py
 data/
   szse_stock.json
+  company_details.csv
 ```
 
 ### Main files
