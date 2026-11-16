@@ -42,7 +42,7 @@ News-workflow and input limitations: The annual-report scripts do not establish 
 
 Software environment and installation
 
-The original Python version 3.13. requirements.txt lists the package names imported by the supplied code; it is not a historically pinned environment. 
+The original Python version is 3.13. requirements.txt lists the package names imported by the supplied code; it is not a historically pinned environment. 
 
 Suggested setup for a new test environment (not proof of the historical environment):
 
