@@ -6,7 +6,7 @@
 
 This repository documents the Python workflow used to collect, prepare, and screen corporate annual reports and financial news for textual accounts of technological redeployment and serendipitous innovation among Chinese listed firms. The screening uses a structured Chinese-language prompt and DeepSeek-R1 through the SiliconFlow API.
 
-The workflow covers document collection and preparation, AI-assisted extraction, structured output processing, and review of relevant textual passages. The annual-report processing scripts are provided below. Financial news is a second textual source used in the research; its collection-specific scripts are not included in the current repository structure.
+The workflow covers document collection and preparation, AI-assisted extraction, structured output processing, and review of relevant textual passages. The annual-report processing scripts are provided below. 
 
 ## Repository structure
 
@@ -33,7 +33,7 @@ data/
 
 | File | Purpose |
 | --- | --- |
-| `company_details.csv` | Company and stock information used to identify firms for document collection |
+| `data/company_details.csv` | Company and stock information used to identify firms for document collection |
 | `data/szse_stock.json` | Stock identifier lookup used by the annual-report crawler |
 | `scripts/00_crawl_annual_reports.py` | Retrieve annual-report announcement metadata from CNINFO |
 | `scripts/01_clean_annual_reports.py` | Clean announcement records and prepare firm/report lists |
@@ -43,7 +43,6 @@ data/
 | `scripts/04_run_deepseek_extraction.py` | Submit document text to DeepSeek-R1 and save results |
 | `scripts/format_to_json.py` | Parse and format structured model responses |
 | `scripts/summarize_jsonl.py` | Summarize saved JSONL screening results |
-| `requirements.txt` | Python package dependencies |
 
 ## Software environment
 
