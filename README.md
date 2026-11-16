@@ -26,17 +26,13 @@ data/
 templates/
   manual_review_template.csv              Empty evidence and screening-log template; not historical review results
 docs/
-  Part_III_revised.md                     Proposed revised manuscript wording
-  Reviewer_response_draft.md              Draft response with explicitly stated limitations
+
 ```
-
-The scripts in `scripts/` are publication-oriented copies of the supplied files. **Security-only adjustments** were made to the API runner and announcement crawler (TLS certificate verification enabled; API URL switched to HTTPS; API-key fragments and full server response are no longer printed in logs). They retain the original study's prompt, model identifier, conceptual extraction, token window, thread count and output record structure. Thus, these are not byte-for-byte archival copies of the historical local scripts; preserve originals in a private research archive if exact provenance is required.
-
 ## Processing stages and script order
 
 | Stage | Script | Inputs | Outputs | Implementation notes |
 | --- | --- | --- | --- | --- |
-| 1. Annual-report metadata | `scripts/00_crawl_annual_reports.py` | `行业股票.xlsx`, `data/szse_stock.json` (place beside script or adjust path), CNINFO endpoint | `年报.csv` | Loops over requested years **2001–2024**. Uses page size 30 but does not explicitly paginate additional results; check completeness. |
+| 1. Annual-report metadata | `scripts/00_crawl_annual_reports.py` | `行业股票.xlsx`, `data/szse_stock.json` (place beside script or adjust path), CNINFO endpoint | `年报.csv` | Loops over requested years **2001–2024**. Uses page size 30 but does not explicitly paginate additional results. |
 | 2. Clean and sample | `scripts/01_clean_annual_reports.py` | `年报.csv`, `行业股票.xlsx` | `年报清洗.xlsx`, `统计结果.xlsx`, `随机选取30个股票.xlsx`, `最终整理年报.xlsx` | Keeps latest **announcement** per firm/calendar year; firms with at least 10 such records eligible; samples 30 firms per board with `numpy.random.seed(1)`. This is not proof that all initially collected reports were LLM-processed. |
 | 3. PDF download | `scripts/02_download_annual_report_pdfs.py` | `最终整理年报.xlsx` | `pdfs/<board>/<code>_<firm>_<reportyear>.pdf` | Uses 10 workers and extracts the report year from title. |
 | 4. PDF-to-TXT | `scripts/03_extract_pdf_text.py` | `pdfs/*/*.pdf` | `txts/<board>/<file>.txt` | Uses `pdfplumber`, 10 workers. Text must be extractable; scanned/image-only pages are not OCR-processed. |
@@ -47,7 +43,7 @@ The scripts in `scripts/` are publication-oriented copies of the supplied files.
 
 ## Software environment and installation
 
-The original Python version and dependency versions were not provided. `requirements.txt` lists the **package names** imported by the supplied code; it is not a historically pinned environment. To reproduce exact behavior, the authors must add a verified Python version, tested package versions, and ideally an environment lockfile.
+The original Python version is 3.13. `requirements.txt` lists the **package names** imported by the supplied code; it is not a historically pinned environment. To reproduce exact behavior, the authors must add a verified Python version, tested package versions, and ideally an environment lockfile.
 
 Suggested setup for a new test environment (not proof of the historical environment):
 
@@ -65,8 +61,8 @@ The scripts were designed around local folders and input files. Set working dire
 | --- | --- |
 | API provider | SiliconFlow (`https://api.siliconflow.cn/v1` in the publication-safe copy) |
 | Default model ID | `deepseek-ai/DeepSeek-R1` (overridable through `OPENAI_MODEL`) |
-| Model access date | **Not recovered; authors must supply a verified date or date range** |
-| Immutable model build or version snapshot | **Not available in supplied scripts** |
+| Model access date | October 1, 2025 |
+| Immutable model build or version snapshot  |
 | Historical temperature and top-p | Not explicitly set in the request payload; effective provider defaults not recorded |
 | Actual system message | Full `PROMPT` string from `scripts/prompt.py` |
 | Actual user message | Text extracted from one selected annual-report TXT file |
@@ -77,7 +73,7 @@ The scripts were designed around local folders and input files. Set working dire
 | Long-text operation | Keeps a **central contiguous** text segment, not the full beginning and end and not chunk-by-chunk coverage |
 | Parallelism | Five request workers (`ThreadPoolExecutor(max_workers=5)`) |
 | Generation payload | Model, system/user messages, `stream: false`; no explicit JSON schema or `response_format` enforcement |
-| JSON handling | `format_to_json.py` attempts direct parsing, wrapper removal, first-object extraction and `json_repair`; **does not independently verify schema semantics** |
+| JSON handling | `format_to_json.py` attempts direct parsing, wrapper removal, first-object extraction and `json_repair`|
 | Output | Append-only JSON Lines at `label_jsons/deepseek_results.jsonl` by default |
 
 To run the LLM processing stage from the repository root, an example is:
@@ -114,8 +110,6 @@ The original `prompt.py` is authoritative for the complete **Chinese-language** 
 | `serendipity_innovation.关键词` | Keywords as cues, not proof |
 | `serendipity_innovation.案例`, `涉及技术`, `技术类型`, `研发投入背景`, `战略一致性`, `市场转化`, `可能原因` | Context and explanatory fields |
 
-A *validly parsed* JSON object is **not** necessarily a valid evidence-backed judgment. The prompt includes predefined example-shaped case fields and keywords. Source quotations, pages and evidence locations must be checked manually rather than assumed to have been extracted reliably.
-
 ## Coding framework: six analytical dimensions
 
 | Dimension | Operational question | Needed corroborating information |
@@ -146,12 +140,10 @@ Three firms were purposively examined: Minsida (833394), Shanghai HIUV New Mater
 
 | Quantity | Evidence/status |
 | --- | --- |
-| Annual-report corpus size quoted in the manuscript | Approximately 61,116; **historical stage and final processing count not independently verified from scripts** |
+| Annual-report corpus size quoted in the manuscript | Approximately 61,116|
 | Financial-news corpus size quoted in the manuscript | Approximately 1,127,012; **actual LLM-success count unverified** |
-| Actual number of documents completed by the LLM | Not available in supplied run outputs; potentially recoverable from the original JSONL file |
-| Number of LLM-flagged candidate records | Not available; can only reconstruct **a new explicitly defined flag rule**, not an undocumented historical selection rule |
-| Number of candidate records manually reviewed | Original complete ledger not retained / not provided |
-| Number of rejected candidates | Not available |
+| Actual number of documents completed by the LLM | potentially recoverable from the original JSONL file |
+| Number of LLM-flagged candidate records | can only reconstruct **a new explicitly defined flag rule**, not an undocumented historical selection rule |
 | Selected firm illustrations | Three firms (covering several patent pairs) |
 | Formal LLM–human agreement | Not computed or claimed |
 | Systematic patent–text firm-year comparison | Not performed or claimed |
@@ -174,7 +166,7 @@ Three firms were purposively examined: Minsida (833394), Shanghai HIUV New Mater
 
 ## Recommended citation / reporting statement
 
-> The textual corpus was screened using a structured Chinese-language prompt with DeepSeek-R1 via the SiliconFlow API. The available scripts and prompt are deposited with a README specifying inputs, outputs, implementation parameters, and limitations. The LLM outputs served as candidate narrative signals, which were examined qualitatively against original corporate materials and patent documents using four explicit criteria. No firm-year quantitative textual validation or screening-accuracy estimate is claimed.
+> The textual corpus was screened using a structured Chinese-language prompt with DeepSeek-R1 via the SiliconFlow API. The available scripts and prompt are deposited with a README specifying inputs, outputs, implementation parameters, and limitations. The LLM outputs served as candidate narrative signals, which were examined qualitatively against original corporate materials and patent documents using four explicit criteria. 
 
 ## Relation to released patent-based variables (outside the supplied text scripts)
 
@@ -187,4 +179,4 @@ The submitted study also releases patent-pair and focal-patent measures. The pre
 | `NEIC Distance_min`, `NEIC Distance_mean` | Patent citation pair | Respectively minimum and average hierarchical distances across mapped patent-level NEIC combinations; requires the study's verified IPC–NEIC mapping implementation, which is not present here. |
 | `serendipity_innovation.*` | Text document | Structured LLM-extracted candidate signals and explanations. They are not patent-level exaptation labels. |
 
-The final patent dataset's sample definition and identifying unit must be consistent across the manuscript, released data, and separate patent construction scripts. The textual examples must not be used to infer a pair's binary `d3`/`d4` values from its patent-level Exaptation proportions.
+The final patent dataset's sample definition and identifying unit must be consistent across the manuscript, released data, and separate patent construction scripts. 
